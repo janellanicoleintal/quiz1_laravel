@@ -10,7 +10,7 @@ class employeecontroller extends Controller
 {
     public function index()
     {   
-        
+        $employees = employee::get();
         return view ('employee.index',compact('employees'));
     }
 
@@ -32,14 +32,14 @@ class employeecontroller extends Controller
         
     ]);
 
-    $employees::create($request->all());
+    employee::create($request->all());
     return view ('employee.create');
     }
 
     public function edit( int $id)
     {
         $employees = employee::findOrFail($id);
-        return view ('employee.edit');
+        return view ('employee.edit',compact('employee'));
     }
 
     public function update(Request $request, int $id) {
@@ -54,12 +54,12 @@ class employeecontroller extends Controller
                 
             ]);
         
-            $employees = employee::findOrFail($id)->($request->all());
+            employee::findOrFail($id)->update($request->all());
             return redirect ()->back()->with('status','Employee Updated Successfully!');
             }
     }
 
-    public function (int $id){
+    public function delete(int $id){
         $employees = employee::findOrFail($id);
         $employees->delete();
         return redirect ()->back()->with('status','Employee Deleted');
